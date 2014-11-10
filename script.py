@@ -58,7 +58,10 @@ if __name__ == '__main__':
     linksempresas = []
     while (url is not None):
         actualpage = etree.HTML(urllib.urlopen(url).read())
-        linksempresas.extend(actualpage.xpath('//a[text()="+info"]/@href'))
+        linkempresaspage = actualpage.xpath("//a[contains(@onclick,'clickMasInfo')]/@onclick")
+        linkempresaspage = map(lambda x: x.split('"')[1][:-1], linkempresaspage)
+
+        linksempresas.extend(linkempresaspage)
         urlssiguiente = actualpage.xpath('//a[text()="Siguiente"]/@href')
         if (len(urlssiguiente) > 0):
             url = baseurl + urlssiguiente[0]
